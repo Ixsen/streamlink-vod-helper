@@ -1,5 +1,6 @@
 package de.ixsen.streamlinkvodhelper.main;
 
+import de.ixsen.streamlinkvodhelper.main.persistance.DatabaseActions;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,19 +20,20 @@ import java.util.List;
 public class Main extends Application {
     public static final String LINK = "http://www.twitch.tv";
 
+    public static void main(String[] args) {
+        Application.launch(args);
+    }
+
     @Override
     public void init() throws Exception {
         super.init();
+        DatabaseActions.loadDatabase();
     }
 
     @Override
     public void stop() throws Exception {
         this.persistCookies();
         super.stop();
-    }
-
-    public static void main(String[] args) {
-        Application.launch(args);
     }
 
     @Override
