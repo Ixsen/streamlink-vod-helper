@@ -1,8 +1,7 @@
-package de.ixsen.streamlinkvodhelper.main.persistance;
+package de.ixsen.streamlinkvodhelper.main.utils;
 
 import de.ixsen.streamlinkvodhelper.main.data.HistoryDTO;
 import de.ixsen.streamlinkvodhelper.main.data.LinkDTO;
-import de.ixsen.streamlinkvodhelper.main.log.HasLogger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,14 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import static de.ixsen.streamlinkvodhelper.main.persistance.SQLCommands.CREATE_HISTORY_DB;
-import static de.ixsen.streamlinkvodhelper.main.persistance.SQLCommands.CREATE_LINK_DB;
-import static de.ixsen.streamlinkvodhelper.main.persistance.SQLCommands.DELETE_HISTORY;
-import static de.ixsen.streamlinkvodhelper.main.persistance.SQLCommands.DELETE_LINK;
-import static de.ixsen.streamlinkvodhelper.main.persistance.SQLCommands.INSERT_HISTORY;
-import static de.ixsen.streamlinkvodhelper.main.persistance.SQLCommands.INSERT_LINK;
-import static de.ixsen.streamlinkvodhelper.main.persistance.SQLCommands.LOAD_HISTORY;
-import static de.ixsen.streamlinkvodhelper.main.persistance.SQLCommands.LOAD_LINKS;
+import static de.ixsen.streamlinkvodhelper.main.utils.SQLCommands.CREATE_HISTORY_DB;
+import static de.ixsen.streamlinkvodhelper.main.utils.SQLCommands.CREATE_LINK_DB;
+import static de.ixsen.streamlinkvodhelper.main.utils.SQLCommands.DELETE_HISTORY;
+import static de.ixsen.streamlinkvodhelper.main.utils.SQLCommands.DELETE_LINK;
+import static de.ixsen.streamlinkvodhelper.main.utils.SQLCommands.INSERT_HISTORY;
+import static de.ixsen.streamlinkvodhelper.main.utils.SQLCommands.INSERT_LINK;
+import static de.ixsen.streamlinkvodhelper.main.utils.SQLCommands.LOAD_HISTORY;
+import static de.ixsen.streamlinkvodhelper.main.utils.SQLCommands.LOAD_LINKS;
 
 public class DatabaseActions implements HasLogger {
 

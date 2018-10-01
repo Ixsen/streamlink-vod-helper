@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
@@ -23,8 +25,11 @@
                         <Button mnemonicParsing="false" onAction="#openInPlayerClicked" text="Open in player" />
                         <Button mnemonicParsing="false" onAction="#addLink" text="Add link" />
                         <ProgressIndicator fx:id="calcIndicator" accessibleHelp="Job is running" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="25.0" visible="false" />
+                  <TextField fx:id="searchField" onKeyPressed="#searchFieldKeyPressed" />
+                        <Button mnemonicParsing="false" onAction="#startSearch" text="Search" />
+                  <ComboBox fx:id="searchTypeCombobox" prefWidth="150.0" promptText="Search Type" />
                   <Pane fx:id="hSpacer" maxWidth="1.7976931348623157E308" />
-                        <Button mnemonicParsing="false" text="Button" />
+                  <Button mnemonicParsing="false" onAction="#settingsClicked" text="Settings" />
                     </ToolBar>
                     <SplitPane dividerPositions="0.5" layoutY="35.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="35.0">
                         <VBox fx:id="links" minWidth="100.0" prefWidth="100.0" />

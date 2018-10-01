@@ -1,14 +1,22 @@
 package de.ixsen.streamlinkvodhelper.main.view;
 
-import de.ixsen.streamlinkvodhelper.main.custom.LinkButton;
+import com.google.gson.JsonArray;
+import de.ixsen.streamlinkvodhelper.main.customcomponents.LinkButton;
 import de.ixsen.streamlinkvodhelper.main.data.HistoryDTO;
 import de.ixsen.streamlinkvodhelper.main.data.LinkDTO;
-import de.ixsen.streamlinkvodhelper.main.persistance.DatabaseActions;
+import de.ixsen.streamlinkvodhelper.main.data.SearchType;
+import de.ixsen.streamlinkvodhelper.main.utils.DatabaseActions;
+import de.ixsen.streamlinkvodhelper.main.utils.Dialogs;
+import de.ixsen.streamlinkvodhelper.main.utils.HtmlCalls;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -30,23 +38,21 @@ import static de.ixsen.streamlinkvodhelper.main.Main.LINK;
 public class MainViewController {
 
     @FXML
+    private TextField searchField;
+    @FXML
+    private ComboBox<SearchType> searchTypeCombobox;
+    @FXML
     private Tab browseTab;
-
     @FXML
     private Tab historyTab;
-
     @FXML
     private Pane hSpacer;
-
     @FXML
     private ProgressIndicator calcIndicator;
-
     @FXML
     private TableView<HistoryDTO> historyTable;
-
     @FXML
     private VBox links;
-
     @FXML
     private WebView webview;
 
@@ -67,16 +73,25 @@ public class MainViewController {
         this.webviewEngine = this.webview.getEngine();
         this.webviewEngine.load(LINK);
         this.reloadLinks();
+        this.initializeTable();
+        this.reloadHistory();
+        this.initializeSearchTypes();
+//        this.webviewEngine.getLoadWorker().stateProperty().addListener(this::websiteLoaded);
+    }
 
+    private void initializeTable() {
         this.historyTable.getVisibleLeafColumn(0).setCellValueFactory(new PropertyValueFactory<>("name"));
         this.historyTable.getVisibleLeafColumn(0).prefWidthProperty().bind(this.historyTable.widthProperty().divide(2.5));
         this.historyTable.getVisibleLeafColumn(1).setCellValueFactory(new PropertyValueFactory<>("url"));
         this.historyTable.getVisibleLeafColumn(1).prefWidthProperty().bind(this.historyTable.widthProperty().divide(2.5));
         this.historyTable.getVisibleLeafColumn(2).setCellValueFactory(new PropertyValueFactory<>("date"));
         this.historyTable.getVisibleLeafColumn(2).prefWidthProperty().bind(this.historyTable.widthProperty().divide(5));
+    }
 
-        this.reloadHistory();
-//        this.webviewEngine.getLoadWorker().stateProperty().addListener(this::websiteLoaded);
+    private void initializeSearchTypes() {
+        for (SearchType value : SearchType.values()) {
+            this.searchTypeCombobox.getItems().add(value);
+        }
     }
 
 //    private void websiteLoaded(ObservableValue ov, Worker.State oldState, Worker.State newState) {
@@ -103,6 +118,29 @@ public class MainViewController {
         String url = this.webviewEngine.getLocation();
         DatabaseActions.addToLinks(title, url);
         this.reloadLinks();
+    }
+
+    @FXML
+    private void settingsClicked() {
+
+    }
+
+    @FXML
+    private void startSearch() {
+        SearchType selectedItem = this.searchTypeCombobox.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            switch (selectedItem) {
+                case Streamer:
+                    JsonArray vodsByLogin = HtmlCalls.getVodsByLogin(this.searchField.getText());
+                    Dialogs.info("VODS FOUND!", "There are many: " + vodsByLogin.size());
+                    break;
+                case Game:
+                    Dialogs.warning("Not implemented yet");
+                    break;
+            }
+        } else {
+            Dialogs.info("Please select a search type");
+        }
     }
 
     private void reloadLinks() {
@@ -137,6 +175,13 @@ public class MainViewController {
             HistoryDTO selectedItem = this.historyTable.getSelectionModel().getSelectedItem();
             this.webviewEngine.load(selectedItem.getUrl());
             this.browseTab.getTabPane().getSelectionModel().select(this.browseTab);
+        }
+    }
+
+    @FXML
+    private void searchFieldKeyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            this.startSearch();
         }
     }
 }

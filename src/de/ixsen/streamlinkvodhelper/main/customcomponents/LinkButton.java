@@ -1,6 +1,6 @@
-package de.ixsen.streamlinkvodhelper.main.custom;
+package de.ixsen.streamlinkvodhelper.main.customcomponents;
 
-import de.ixsen.streamlinkvodhelper.main.persistance.DatabaseActions;
+import de.ixsen.streamlinkvodhelper.main.utils.DatabaseActions;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;

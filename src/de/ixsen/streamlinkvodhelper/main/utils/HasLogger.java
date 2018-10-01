@@ -1,4 +1,4 @@
-package de.ixsen.streamlinkvodhelper.main.log;
+package de.ixsen.streamlinkvodhelper.main.utils;
 
 import java.lang.invoke.MethodHandles;
 import java.util.logging.Logger;
