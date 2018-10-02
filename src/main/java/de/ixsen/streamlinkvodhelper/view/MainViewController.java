@@ -1,13 +1,14 @@
-package de.ixsen.streamlinkvodhelper.main.view;
+package de.ixsen.streamlinkvodhelper.view;
 
 import com.google.gson.JsonArray;
-import de.ixsen.streamlinkvodhelper.main.customcomponents.LinkButton;
-import de.ixsen.streamlinkvodhelper.main.data.HistoryDTO;
-import de.ixsen.streamlinkvodhelper.main.data.LinkDTO;
-import de.ixsen.streamlinkvodhelper.main.data.SearchType;
-import de.ixsen.streamlinkvodhelper.main.utils.DatabaseActions;
-import de.ixsen.streamlinkvodhelper.main.utils.Dialogs;
-import de.ixsen.streamlinkvodhelper.main.utils.HtmlCalls;
+import de.ixsen.streamlinkvodhelper.Main;
+import de.ixsen.streamlinkvodhelper.customcomponents.LinkButton;
+import de.ixsen.streamlinkvodhelper.data.HistoryDTO;
+import de.ixsen.streamlinkvodhelper.data.LinkDTO;
+import de.ixsen.streamlinkvodhelper.data.SearchType;
+import de.ixsen.streamlinkvodhelper.utils.DatabaseActions;
+import de.ixsen.streamlinkvodhelper.utils.Dialogs;
+import de.ixsen.streamlinkvodhelper.utils.HtmlCalls;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ProgressIndicator;
@@ -33,7 +34,7 @@ import java.net.CookiePolicy;
 import java.util.Collections;
 import java.util.List;
 
-import static de.ixsen.streamlinkvodhelper.main.Main.LINK;
+import static de.ixsen.streamlinkvodhelper.Main.LINK;
 
 public class MainViewController {
 

@@ -1,4 +1,4 @@
-package de.ixsen.streamlinkvodhelper.main.data;
+package de.ixsen.streamlinkvodhelper.data;
 
 public enum SearchType {
     Streamer,

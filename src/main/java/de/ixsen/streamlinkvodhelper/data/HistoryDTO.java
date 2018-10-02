@@ -1,4 +1,4 @@
-package de.ixsen.streamlinkvodhelper.main.data;
+package de.ixsen.streamlinkvodhelper.data;
 
 public class HistoryDTO {
     private final int id;
@@ -6,15 +6,15 @@ public class HistoryDTO {
     private String url;
     private String date;
 
-    public int getId() {
-        return this.id;
-    }
-
     public HistoryDTO(int id, String name, String url, String date) {
         this.id = id;
         this.name = name;
         this.url = url;
         this.date = date;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public String getName() {

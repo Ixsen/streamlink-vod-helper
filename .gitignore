@@ -3,6 +3,9 @@
 .out
 .idea
 
+*.iml
+*.db
+
 # Log file
 *.log
 

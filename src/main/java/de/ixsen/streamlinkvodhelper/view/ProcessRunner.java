@@ -1,4 +1,4 @@
-package de.ixsen.streamlinkvodhelper.main.view;
+package de.ixsen.streamlinkvodhelper.view;
 
 import javafx.scene.control.ProgressIndicator;
 

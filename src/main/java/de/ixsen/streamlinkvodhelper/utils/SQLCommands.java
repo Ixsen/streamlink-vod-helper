@@ -1,4 +1,4 @@
-package de.ixsen.streamlinkvodhelper.main.utils;
+package de.ixsen.streamlinkvodhelper.utils;
 
 public interface SQLCommands {
     String CREATE_LINK_DB = "CREATE TABLE IF NOT EXISTS links(\n" +

@@ -1,6 +1,6 @@
-package de.ixsen.streamlinkvodhelper.main;
+package de.ixsen.streamlinkvodhelper;
 
-import de.ixsen.streamlinkvodhelper.main.utils.DatabaseActions;
+import de.ixsen.streamlinkvodhelper.utils.DatabaseActions;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

@@ -1,4 +1,4 @@
-package de.ixsen.streamlinkvodhelper.main.data;
+package de.ixsen.streamlinkvodhelper.data;
 
 public class LinkDTO {
     private final int id;
