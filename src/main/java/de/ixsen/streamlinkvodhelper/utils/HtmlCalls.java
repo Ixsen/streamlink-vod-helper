@@ -4,22 +4,26 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import de.ixsen.streamlinkvodhelper.data.SearchType;
+import de.ixsen.streamlinkvodhelper.data.settings.Settings;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
 
-public class HtmlCalls implements HasLogger {
+public class HtmlCalls {
 
-    public static void getVodInfo(int vodId) {
-
-    }
-
-    public static JsonArray getVodsByUserId(int userId) {
+    public static JsonArray getVodsByUserId(int userId, SearchType type) {
         try {
-            URL url = new URL("https://api.twitch.tv/helix/videos?user_id=" + userId);
+            String userIdHeader = "&user_id=" + userId;
+            String amount = "&first=100";
+            String typeHeader = "&type=" + type;
+            String urlPath = "https://api.twitch.tv/helix/videos?" + userIdHeader + amount + typeHeader;
+            URL url = new URL(urlPath);
+            HasLogger.getLogger().log(Level.INFO, "Doing Get on: " + urlPath);
             HttpURLConnection connection = doHtmlCall(url);
             connection.connect();
             JsonParser jsonParser = new JsonParser();
@@ -47,14 +51,14 @@ public class HtmlCalls implements HasLogger {
         try {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            connection.setRequestProperty("Client-ID", "SETOWN");
+            if (Settings.getSettings().getClientId().isEmpty()) {
+                Dialogs.warning("Please set your Client ID in the settings.");
+                throw new RuntimeException("No Client ID");
+            }
+            connection.setRequestProperty("Client-ID", Settings.getSettings().getClientId());
             return connection;
         } catch (IOException e) {
             throw new RuntimeException("Could not create Connection", e);
         }
-    }
-
-    public static JsonArray getVodsByLogin(String login) {
-        return getVodsByUserId(getUserIdByLogin(login));
     }
 }

@@ -1,15 +1,21 @@
 package de.ixsen.streamlinkvodhelper.view;
 
 import com.google.gson.JsonArray;
-import de.ixsen.streamlinkvodhelper.Main;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import de.ixsen.streamlinkvodhelper.customcomponents.LinkButton;
+import de.ixsen.streamlinkvodhelper.customcomponents.ProcessRunner;
+import de.ixsen.streamlinkvodhelper.customcomponents.SearchResultComponent;
 import de.ixsen.streamlinkvodhelper.data.HistoryDTO;
 import de.ixsen.streamlinkvodhelper.data.LinkDTO;
 import de.ixsen.streamlinkvodhelper.data.SearchType;
+import de.ixsen.streamlinkvodhelper.data.settings.Settings;
 import de.ixsen.streamlinkvodhelper.utils.DatabaseActions;
 import de.ixsen.streamlinkvodhelper.utils.Dialogs;
 import de.ixsen.streamlinkvodhelper.utils.HtmlCalls;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
@@ -20,32 +26,32 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static de.ixsen.streamlinkvodhelper.Main.LINK;
+import java.util.Objects;
 
 public class MainViewController {
 
     @FXML
+    private ComboBox<SearchType> searchType;
+    @FXML
+    private FlowPane searchResults;
+    @FXML
     private TextField searchField;
     @FXML
-    private ComboBox<SearchType> searchTypeCombobox;
-    @FXML
     private Tab browseTab;
-    @FXML
-    private Tab historyTab;
     @FXML
     private Pane hSpacer;
     @FXML
@@ -54,10 +60,9 @@ public class MainViewController {
     private TableView<HistoryDTO> historyTable;
     @FXML
     private VBox links;
-    @FXML
-    private WebView webview;
 
-    private WebEngine webviewEngine;
+    private Integer currentId;
+
 
     public MainViewController() {
     }
@@ -70,14 +75,10 @@ public class MainViewController {
         System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
 
         HBox.setHgrow(this.hSpacer, Priority.SOMETIMES);
-
-        this.webviewEngine = this.webview.getEngine();
-        this.webviewEngine.load(LINK);
+        this.searchType.getItems().addAll(Arrays.asList(SearchType.values()));
         this.reloadLinks();
         this.initializeTable();
         this.reloadHistory();
-        this.initializeSearchTypes();
-//        this.webviewEngine.getLoadWorker().stateProperty().addListener(this::websiteLoaded);
     }
 
     private void initializeTable() {
@@ -89,58 +90,63 @@ public class MainViewController {
         this.historyTable.getVisibleLeafColumn(2).prefWidthProperty().bind(this.historyTable.widthProperty().divide(5));
     }
 
-    private void initializeSearchTypes() {
-        for (SearchType value : SearchType.values()) {
-            this.searchTypeCombobox.getItems().add(value);
-        }
-    }
+    private void loadVideo(String title, String url, String date) {
+        String pathStreamlink = Settings.getSettings().getPathStreamlink();
+        pathStreamlink = pathStreamlink.isEmpty()
+                ? "streamlink"
+                : pathStreamlink;
 
-//    private void websiteLoaded(ObservableValue ov, Worker.State oldState, Worker.State newState) {
-//        if (newState == Worker.State.SCHEDULED) {
-//            System.out.println("LOADED");
-//        }
-//    }
-
-    @FXML
-    private void openInPlayerClicked() throws IOException, InterruptedException {
-        String link = this.webviewEngine.getLocation();
-        String title = this.webviewEngine.getTitle();
-
-        ProcessBuilder processBuilder = new ProcessBuilder("streamlink", "--player-passthrough", "hls", link, "best").inheritIO();
+        ProcessBuilder processBuilder = new ProcessBuilder(pathStreamlink, "--player-passthrough", "hls", url, "best").inheritIO();
         ProcessRunner processRunner = new ProcessRunner(processBuilder, this.calcIndicator);
         processRunner.start();
 
-        DatabaseActions.addToHistory(title, link, "SOMEDAY");
+        DatabaseActions.addToHistory(title, url, date);
+        this.reloadHistory();
     }
 
     @FXML
     private void addLink() {
-        String title = this.webviewEngine.getTitle();
-        String url = this.webviewEngine.getLocation();
-        DatabaseActions.addToLinks(title, url);
-        this.reloadLinks();
+        if (this.currentId != null) {
+            DatabaseActions.addToLinks(this.searchField.getText(), this.currentId);
+            this.reloadLinks();
+        } else {
+            Dialogs.info("Please search for runSearch streamer to save runSearch search link");
+        }
     }
 
     @FXML
-    private void settingsClicked() {
-
+    private void settingsClicked() throws IOException {
+        Scene scene = new Scene(FXMLLoader.load(this.getClass().getResource("Settings.fxml")));
+        Stage stage = new Stage();
+        stage.setTitle("Settings");
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
     private void startSearch() {
-        SearchType selectedItem = this.searchTypeCombobox.getSelectionModel().getSelectedItem();
-        if (selectedItem != null) {
-            switch (selectedItem) {
-                case Streamer:
-                    JsonArray vodsByLogin = HtmlCalls.getVodsByLogin(this.searchField.getText());
-                    Dialogs.info("VODS FOUND!", "There are many: " + vodsByLogin.size());
-                    break;
-                case Game:
-                    Dialogs.warning("Not implemented yet");
-                    break;
-            }
-        } else {
-            Dialogs.info("Please select a search type");
+        this.search(this.searchField.getText());
+    }
+
+    private void search(String userName) {
+        int userIdByLogin = HtmlCalls.getUserIdByLogin(userName);
+        if (!Objects.equals(this.currentId, userIdByLogin)) {
+            this.currentId = userIdByLogin;
+        }
+        this.searchResults.getChildren().clear();
+        JsonArray vodsByLogin = HtmlCalls.getVodsByUserId(userIdByLogin, this.searchType.getValue());
+        for (JsonElement elem : vodsByLogin) {
+            JsonObject jsonObject = elem.getAsJsonObject();
+
+            String thumbnail_url = jsonObject.get("thumbnail_url").getAsString().replace("%{width}", "320").replace("%{height}", "180");
+            String duration = jsonObject.get("duration").getAsString();
+            String title = jsonObject.get("title").getAsString();
+            String created_at = jsonObject.get("created_at").getAsString();
+            String url = jsonObject.get("url").getAsString();
+
+            SearchResultComponent searchResultComponent = new SearchResultComponent(thumbnail_url, duration, title, created_at);
+            searchResultComponent.setOnMouseClicked(e -> this.loadVideo(title, url, created_at));
+            this.searchResults.getChildren().add(searchResultComponent);
         }
     }
 
@@ -148,10 +154,18 @@ public class MainViewController {
         this.links.getChildren().clear();
         List<LinkDTO> links = DatabaseActions.getLinks();
         for (LinkDTO link : links) {
-            LinkButton button = new LinkButton(link.getId(), link.getName(), link.getUrl());
+            LinkButton button = new LinkButton(link.getId(), link.getName(), link.getUserId());
             button.addDeleteCallback(this::reloadLinks);
             button.setOnMouseClicked(e -> this.onLinkClicked(e, button));
             this.links.getChildren().add(button);
+        }
+    }
+
+    private void onLinkClicked(MouseEvent e, LinkButton button) {
+        if (e.getButton() == MouseButton.PRIMARY) {
+            String userName = button.getText();
+            this.searchField.setText(button.getText());
+            this.search(userName);
         }
     }
 
@@ -164,17 +178,11 @@ public class MainViewController {
         }
     }
 
-    private void onLinkClicked(MouseEvent e, LinkButton button) {
-        if (e.getButton() == MouseButton.PRIMARY) {
-            this.webviewEngine.load(button.getUrl());
-        }
-    }
-
 
     public void tableRowDoubleClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() == 2) {
             HistoryDTO selectedItem = this.historyTable.getSelectionModel().getSelectedItem();
-            this.webviewEngine.load(selectedItem.getUrl());
+            this.loadVideo(selectedItem.getName(), selectedItem.getUrl(), selectedItem.getDate());
             this.browseTab.getTabPane().getSelectionModel().select(this.browseTab);
         }
     }

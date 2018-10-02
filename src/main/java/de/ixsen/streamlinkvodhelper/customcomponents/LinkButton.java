@@ -7,13 +7,13 @@ import javafx.scene.control.MenuItem;
 
 public class LinkButton extends Button {
 
-    private final String url;
+    private final int userId;
     private final MenuItem menuItem;
     private final int id;
 
-    public LinkButton(int id, String name, String url) {
+    public LinkButton(int id, String name, int userId) {
         super(name);
-        this.url = url;
+        this.userId = userId;
         this.id = id;
 
         ContextMenu contextMenu = new ContextMenu();
@@ -22,8 +22,8 @@ public class LinkButton extends Button {
         this.setContextMenu(contextMenu);
     }
 
-    public String getUrl() {
-        return this.url;
+    public int getUserId() {
+        return this.userId;
     }
 
     public void addDeleteCallback(Runnable reloadLinks) {

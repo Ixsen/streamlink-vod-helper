@@ -2,21 +2,21 @@ package de.ixsen.streamlinkvodhelper.data;
 
 public class LinkDTO {
     private final int id;
-    private String name;
-    private String url;
+    private final String name;
+    private final int userId;
 
-    public LinkDTO(int id, String name, String url) {
+    public LinkDTO(int id, String name, int userId) {
         this.id = id;
         this.name = name;
-        this.url = url;
+        this.userId = userId;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public String getUrl() {
-        return this.url;
+    public int getUserId() {
+        return this.userId;
     }
 
     public int getId() {

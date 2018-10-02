@@ -2,6 +2,7 @@ package de.ixsen.streamlinkvodhelper.utils;
 
 import de.ixsen.streamlinkvodhelper.data.HistoryDTO;
 import de.ixsen.streamlinkvodhelper.data.LinkDTO;
+import org.sqlite.SQLiteErrorCode;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import static de.ixsen.streamlinkvodhelper.utils.SQLCommands.CREATE_HISTORY_DB;
-import static de.ixsen.streamlinkvodhelper.utils.SQLCommands.CREATE_LINK_DB;
+import static de.ixsen.streamlinkvodhelper.utils.SQLCommands.CREATE_HISTORY_TABLE;
+import static de.ixsen.streamlinkvodhelper.utils.SQLCommands.CREATE_LINK_TABLE;
 import static de.ixsen.streamlinkvodhelper.utils.SQLCommands.DELETE_HISTORY;
 import static de.ixsen.streamlinkvodhelper.utils.SQLCommands.DELETE_LINK;
 import static de.ixsen.streamlinkvodhelper.utils.SQLCommands.INSERT_HISTORY;
@@ -22,12 +23,11 @@ import static de.ixsen.streamlinkvodhelper.utils.SQLCommands.INSERT_LINK;
 import static de.ixsen.streamlinkvodhelper.utils.SQLCommands.LOAD_HISTORY;
 import static de.ixsen.streamlinkvodhelper.utils.SQLCommands.LOAD_LINKS;
 
-public class DatabaseActions implements HasLogger {
-
+public class DatabaseActions {
 
     public static void loadDatabase() {
-        executeSql(CREATE_LINK_DB);
-        executeSql(CREATE_HISTORY_DB);
+        executeSql(CREATE_LINK_TABLE);
+        executeSql(CREATE_HISTORY_TABLE);
         HasLogger.getLogger().log(Level.INFO, "Database connected");
     }
 
@@ -72,14 +72,19 @@ public class DatabaseActions implements HasLogger {
         }
     }
 
-    public static void addToLinks(String name, String url) {
+    public static void addToLinks(String name, int userId) {
         try (PreparedStatement preparedStatement = getPreparedStatement(INSERT_LINK)) {
             preparedStatement.setString(1, name);
-            preparedStatement.setString(2, url);
+            preparedStatement.setInt(2, userId);
             preparedStatement.executeUpdate();
-            HasLogger.getLogger().log(Level.INFO, String.format("Link added: %s, %s", name, url));
+            HasLogger.getLogger().log(Level.INFO, String.format("Link added: %s, %s", name, userId));
         } catch (SQLException e) {
-            HasLogger.getLogger().log(Level.SEVERE, "Could not insert link into database", e);
+            if (e.getErrorCode() == SQLiteErrorCode.SQLITE_CONSTRAINT.code) {
+                Dialogs.error("This link already exists!");
+                HasLogger.getLogger().log(Level.WARNING, "Existing link not inserted into database");
+            } else {
+                HasLogger.getLogger().log(Level.SEVERE, "Could not insert link into database", e);
+            }
         }
     }
 
@@ -93,7 +98,6 @@ public class DatabaseActions implements HasLogger {
         }
     }
 
-
     public static List<LinkDTO> getLinks() {
         ResultSet resultSet = executeQuery(LOAD_LINKS);
         List<LinkDTO> linkDTOS = new ArrayList<>();
@@ -101,9 +105,9 @@ public class DatabaseActions implements HasLogger {
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
-                String url = resultSet.getString("url");
-                linkDTOS.add(new LinkDTO(id, name, url));
-                HasLogger.getLogger().log(Level.INFO, String.format("Link loaded: %s, %s", name, url));
+                int userId = resultSet.getInt("user_id");
+                linkDTOS.add(new LinkDTO(id, name, userId));
+                HasLogger.getLogger().log(Level.INFO, String.format("Link loaded: %s, %s", name, userId));
             }
             return linkDTOS;
         } catch (Exception e) {
@@ -139,5 +143,4 @@ public class DatabaseActions implements HasLogger {
     private static PreparedStatement getPreparedStatement(String queryStatement) throws SQLException {
         return connect().prepareStatement(queryStatement);
     }
-
 }

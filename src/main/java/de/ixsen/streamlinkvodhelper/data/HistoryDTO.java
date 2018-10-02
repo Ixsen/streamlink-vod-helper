@@ -2,9 +2,9 @@ package de.ixsen.streamlinkvodhelper.data;
 
 public class HistoryDTO {
     private final int id;
-    private String name;
-    private String url;
-    private String date;
+    private final String name;
+    private final String url;
+    private final String date;
 
     public HistoryDTO(int id, String name, String url, String date) {
         this.id = id;
