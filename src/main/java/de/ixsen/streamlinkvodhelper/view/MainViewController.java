@@ -34,9 +34,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -69,11 +66,6 @@ public class MainViewController {
 
     @FXML
     public void initialize() {
-        CookieManager cookieManager = new CookieManager();
-        cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-        CookieHandler.setDefault(cookieManager);
-        System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
-
         HBox.setHgrow(this.hSpacer, Priority.SOMETIMES);
         this.searchType.getItems().addAll(Arrays.asList(SearchType.values()));
         this.reloadLinks();
