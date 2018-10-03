@@ -54,7 +54,7 @@ public class SearchCalculation extends AbstractCalculation implements LoggerHelp
 
             SearchResult searchResult = new SearchResult(cachedThumbnail, duration, title, creationDate);
 
-            searchResult.setOnMouseClicked(e -> this.controller.loadVideo(title, thumbnailUrl, videoUrl));
+            searchResult.setOnMouseClicked(e -> this.controller.loadVideo(title, videoUrl, creationDate));
             this.searchResults.add(searchResult);
         }
     }

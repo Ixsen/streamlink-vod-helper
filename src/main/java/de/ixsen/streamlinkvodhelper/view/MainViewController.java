@@ -1,8 +1,8 @@
 package de.ixsen.streamlinkvodhelper.view;
 
-import de.ixsen.streamlinkvodhelper.custom.components.LinkButton;
 import de.ixsen.streamlinkvodhelper.custom.PlayVideoCalculation;
 import de.ixsen.streamlinkvodhelper.custom.SearchCalculation;
+import de.ixsen.streamlinkvodhelper.custom.components.LinkButton;
 import de.ixsen.streamlinkvodhelper.custom.components.SearchResult;
 import de.ixsen.streamlinkvodhelper.data.HistoryDTO;
 import de.ixsen.streamlinkvodhelper.data.LinkDTO;
@@ -90,7 +90,7 @@ public class MainViewController {
             DatabaseUtils.addToLinks(this.searchField.getText(), this.currentId);
             this.reloadLinks();
         } else {
-            DialogUtils.info("Please search for runSearch streamer to save runSearch search link");
+            DialogUtils.info("Please search for streamer to save a shortcut");
         }
     }
 
