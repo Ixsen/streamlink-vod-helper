@@ -1,4 +1,4 @@
-package de.ixsen.streamlinkvodhelper.customcomponents;
+package de.ixsen.streamlinkvodhelper.custom.components;
 
 import de.ixsen.streamlinkvodhelper.utils.LoggerHelper;
 import javafx.fxml.FXML;
@@ -9,9 +9,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
-public class SearchResultComponent extends AnchorPane {
+public class SearchResult extends AnchorPane {
 
     @FXML
     private ImageView thumbnail;
@@ -22,7 +21,7 @@ public class SearchResultComponent extends AnchorPane {
     @FXML
     private Label pubDate;
 
-    public SearchResultComponent(String imageUrl, String duration, String title, String pubDate) {
+    public SearchResult(String thumbnailUrl, String duration, String title, String creationDate) {
         try {
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource("SearchResult.fxml"));
             loader.setController(this);
@@ -31,10 +30,10 @@ public class SearchResultComponent extends AnchorPane {
         } catch (IOException exc) {
             LoggerHelper.getLogger().severe("Creating Search Result failed");
         }
-        this.thumbnail.setImage(new Image(imageUrl));
+        this.thumbnail.setImage(new Image(thumbnailUrl));
         this.duration.setText(duration);
         this.title.setText(title);
-        this.pubDate.setText(pubDate);
+        this.pubDate.setText(creationDate);
     }
 
     public Label getDuration() {

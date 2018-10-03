@@ -16,8 +16,8 @@ public class CacheUtils implements LoggerHelper {
         }
     }
 
-    public static void cacheImage(String url) {
-
+    public static String cacheImage(String url) {
+        return url;
     }
 
     public static void getImage(String name) {

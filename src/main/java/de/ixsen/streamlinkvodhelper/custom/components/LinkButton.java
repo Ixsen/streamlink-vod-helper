@@ -1,4 +1,4 @@
-package de.ixsen.streamlinkvodhelper.customcomponents;
+package de.ixsen.streamlinkvodhelper.custom.components;
 
 import de.ixsen.streamlinkvodhelper.utils.DatabaseUtils;
 import javafx.scene.control.Button;

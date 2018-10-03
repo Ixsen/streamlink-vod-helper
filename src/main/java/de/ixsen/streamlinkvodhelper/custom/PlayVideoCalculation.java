@@ -1,15 +1,20 @@
-package de.ixsen.streamlinkvodhelper.customcomponents;
+package de.ixsen.streamlinkvodhelper.custom;
 
 import javafx.scene.control.ProgressIndicator;
 
 import java.io.IOException;
 
-public class ProcessRunner extends AbstractCalculation {
+public class PlayVideoCalculation extends AbstractCalculation {
     private final ProcessBuilder processBuilder;
 
-    public ProcessRunner(ProcessBuilder processBuilder, ProgressIndicator calcIndicator) {
+    public PlayVideoCalculation(ProcessBuilder processBuilder, ProgressIndicator calcIndicator) {
         super(calcIndicator);
         this.processBuilder = processBuilder;
+    }
+
+    @Override
+    void init() {
+        // do nothing
     }
 
     @Override
@@ -19,5 +24,10 @@ public class ProcessRunner extends AbstractCalculation {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Thread was destroyed too early", e);
         }
+    }
+
+    @Override
+    void closure() {
+        // do nothing
     }
 }

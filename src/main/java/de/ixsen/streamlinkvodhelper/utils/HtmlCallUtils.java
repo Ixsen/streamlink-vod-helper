@@ -52,7 +52,7 @@ public class HtmlCallUtils {
             connection.setRequestMethod("GET");
             if (Settings.getSettings().getClientId().isEmpty()) {
                 DialogUtils.warning("Please set your Client ID in the settings.");
-                throw new RuntimeException("No Client ID");
+                LoggerHelper.getLogger().severe("No client ID set!");
             }
             connection.setRequestProperty("Client-ID", Settings.getSettings().getClientId());
             return connection;

@@ -24,7 +24,7 @@ public class SettingsController {
     private void initialize() {
         this.pathStreamlink.setText(this.settings.getPathStreamlink());
         this.clientId.setText(this.settings.getClientId());
-        this.freeSlot.setText(this.settings.getFreeText());
+        this.freeSlot.setText(this.settings.getPlayer());
     }
 
     @FXML

@@ -14,7 +14,7 @@ public class Settings implements LoggerHelper {
     private static final String FILE_NAME = "settings.cfg";
     private String clientId;
     private String pathStreamlink;
-    private String freeText;
+    private String player;
 
     public String getPathStreamlink() {
         return this.pathStreamlink;
@@ -24,12 +24,12 @@ public class Settings implements LoggerHelper {
         this.pathStreamlink = pathStreamlink;
     }
 
-    public String getFreeText() {
-        return this.freeText;
+    public String getPlayer() {
+        return this.player;
     }
 
-    public void setFreeText(String freeText) {
-        this.freeText = freeText;
+    public void setPlayer(String player) {
+        this.player = player;
     }
 
     public String getClientId() {
@@ -43,7 +43,7 @@ public class Settings implements LoggerHelper {
     public Settings() {
         this.clientId = "";
         this.pathStreamlink = "";
-        this.freeText = "";
+        this.player = "";
     }
 
     public static Settings getSettings() {
@@ -85,9 +85,9 @@ public class Settings implements LoggerHelper {
         }
     }
 
-    public void makeChanges(String pathStreamlink, String clientIdText, String freeSlotText) {
+    public void makeChanges(String pathStreamlink, String clientIdText, String player) {
         this.pathStreamlink = pathStreamlink;
         this.clientId = clientIdText;
-        this.freeText = freeSlotText;
+        this.player = player;
     }
 }
