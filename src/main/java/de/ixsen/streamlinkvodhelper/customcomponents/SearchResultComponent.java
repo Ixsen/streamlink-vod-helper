@@ -1,6 +1,6 @@
 package de.ixsen.streamlinkvodhelper.customcomponents;
 
-import de.ixsen.streamlinkvodhelper.utils.HasLogger;
+import de.ixsen.streamlinkvodhelper.utils.LoggerHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SearchResultComponent extends AnchorPane {
 
@@ -29,7 +29,7 @@ public class SearchResultComponent extends AnchorPane {
             loader.setRoot(this);
             loader.load();
         } catch (IOException exc) {
-            HasLogger.getLogger().log(Level.SEVERE, "Creating Search Result failed", exc);
+            LoggerHelper.getLogger().severe("Creating Search Result failed");
         }
         this.thumbnail.setImage(new Image(imageUrl));
         this.duration.setText(duration);

@@ -17,7 +17,7 @@ public class ProcessRunner extends AbstractCalculation {
         try {
             this.processBuilder.start().waitFor();
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Indicator failed hard", e);
+            throw new RuntimeException("Thread was destroyed too early", e);
         }
     }
 }

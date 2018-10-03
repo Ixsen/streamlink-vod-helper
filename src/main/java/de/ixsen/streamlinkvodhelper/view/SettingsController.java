@@ -22,7 +22,7 @@ public class SettingsController {
 
     @FXML
     private void initialize() {
-        this.pathStreamlink.setText(this.settings.getClientId());
+        this.pathStreamlink.setText(this.settings.getPathStreamlink());
         this.clientId.setText(this.settings.getClientId());
         this.freeSlot.setText(this.settings.getFreeText());
     }

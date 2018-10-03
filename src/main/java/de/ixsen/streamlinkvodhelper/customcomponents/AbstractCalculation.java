@@ -1,6 +1,5 @@
 package de.ixsen.streamlinkvodhelper.customcomponents;
 
-import javafx.application.Platform;
 import javafx.scene.control.ProgressIndicator;
 
 abstract class AbstractCalculation extends Thread {
@@ -14,10 +13,8 @@ abstract class AbstractCalculation extends Thread {
     public void run() {
         if (!this.calcIndicator.isVisible()) {
             this.calcIndicator.setVisible(true);
-            Platform.runLater(() -> {
-                this.calculate();
-                this.calcIndicator.setVisible(false);
-            });
+            this.calculate();
+            this.calcIndicator.setVisible(false);
         } else {
             this.calculate();
         }

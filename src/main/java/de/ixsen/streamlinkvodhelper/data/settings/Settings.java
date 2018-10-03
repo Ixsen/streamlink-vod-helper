@@ -2,16 +2,15 @@ package de.ixsen.streamlinkvodhelper.data.settings;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import de.ixsen.streamlinkvodhelper.utils.Dialogs;
-import de.ixsen.streamlinkvodhelper.utils.HasLogger;
+import de.ixsen.streamlinkvodhelper.utils.DialogUtils;
+import de.ixsen.streamlinkvodhelper.utils.LoggerHelper;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Level;
 
-public class Settings {
+public class Settings implements LoggerHelper {
     private static final String FILE_NAME = "settings.cfg";
     private String clientId;
     private String pathStreamlink;
@@ -63,7 +62,7 @@ public class Settings {
         } catch (IOException e) {
             throw new RuntimeException("Loading settings failed", e);
         } catch (JsonSyntaxException e) {
-            Dialogs.error("Could not process config file!", "Please delete the config.cfg or message the creator of this tool");
+            DialogUtils.error("Could not process config file!", "Please delete the config.cfg or message the creator of this tool");
             throw new RuntimeException("", e);
         }
     }
@@ -74,7 +73,7 @@ public class Settings {
             Gson gson = new Gson();
             gson.toJson(settings, writer);
         } catch (IOException e) {
-            HasLogger.getLogger().log(Level.SEVERE, "Creating settings file failed", e);
+            LoggerHelper.getLogger().severe("Creating settings file failed");
         }
     }
 
@@ -82,7 +81,7 @@ public class Settings {
         try (FileWriter writer = new FileWriter(FILE_NAME)) {
             new Gson().toJson(settings, writer);
         } catch (IOException e) {
-            HasLogger.getLogger().log(Level.SEVERE, "Writing settings file failed", e);
+            LoggerHelper.getLogger().severe("Writing settings file failed");
         }
     }
 

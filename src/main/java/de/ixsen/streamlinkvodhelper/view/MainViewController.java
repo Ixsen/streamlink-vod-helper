@@ -10,9 +10,9 @@ import de.ixsen.streamlinkvodhelper.data.HistoryDTO;
 import de.ixsen.streamlinkvodhelper.data.LinkDTO;
 import de.ixsen.streamlinkvodhelper.data.SearchType;
 import de.ixsen.streamlinkvodhelper.data.settings.Settings;
-import de.ixsen.streamlinkvodhelper.utils.DatabaseActions;
-import de.ixsen.streamlinkvodhelper.utils.Dialogs;
-import de.ixsen.streamlinkvodhelper.utils.HtmlCalls;
+import de.ixsen.streamlinkvodhelper.utils.DatabaseUtils;
+import de.ixsen.streamlinkvodhelper.utils.DialogUtils;
+import de.ixsen.streamlinkvodhelper.utils.HtmlCallUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -92,17 +92,17 @@ public class MainViewController {
         ProcessRunner processRunner = new ProcessRunner(processBuilder, this.calcIndicator);
         processRunner.start();
 
-        DatabaseActions.addToHistory(title, url, date);
+        DatabaseUtils.addToHistory(title, url, date);
         this.reloadHistory();
     }
 
     @FXML
     private void addLink() {
         if (this.currentId != null) {
-            DatabaseActions.addToLinks(this.searchField.getText(), this.currentId);
+            DatabaseUtils.addToLinks(this.searchField.getText(), this.currentId);
             this.reloadLinks();
         } else {
-            Dialogs.info("Please search for runSearch streamer to save runSearch search link");
+            DialogUtils.info("Please search for runSearch streamer to save runSearch search link");
         }
     }
 
@@ -121,12 +121,12 @@ public class MainViewController {
     }
 
     private void search(String userName) {
-        int userIdByLogin = HtmlCalls.getUserIdByLogin(userName);
+        int userIdByLogin = HtmlCallUtils.getUserIdByLogin(userName);
         if (!Objects.equals(this.currentId, userIdByLogin)) {
             this.currentId = userIdByLogin;
         }
         this.searchResults.getChildren().clear();
-        JsonArray vodsByLogin = HtmlCalls.getVodsByUserId(userIdByLogin, this.searchType.getValue());
+        JsonArray vodsByLogin = HtmlCallUtils.getVodsByUserId(userIdByLogin, this.searchType.getValue());
         for (JsonElement elem : vodsByLogin) {
             JsonObject jsonObject = elem.getAsJsonObject();
 
@@ -144,7 +144,7 @@ public class MainViewController {
 
     private void reloadLinks() {
         this.links.getChildren().clear();
-        List<LinkDTO> links = DatabaseActions.getLinks();
+        List<LinkDTO> links = DatabaseUtils.getLinks();
         for (LinkDTO link : links) {
             LinkButton button = new LinkButton(link.getId(), link.getName(), link.getUserId());
             button.addDeleteCallback(this::reloadLinks);
@@ -163,7 +163,7 @@ public class MainViewController {
 
     private void reloadHistory() {
         this.historyTable.getItems().clear();
-        List<HistoryDTO> history = DatabaseActions.getHistory();
+        List<HistoryDTO> history = DatabaseUtils.getHistory();
         Collections.reverse(history);
         for (HistoryDTO historyDTO : history) {
             this.historyTable.getItems().add(historyDTO);

@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import static de.ixsen.streamlinkvodhelper.utils.SQLCommands.CREATE_HISTORY_TABLE;
 import static de.ixsen.streamlinkvodhelper.utils.SQLCommands.CREATE_LINK_TABLE;
@@ -23,12 +22,13 @@ import static de.ixsen.streamlinkvodhelper.utils.SQLCommands.INSERT_LINK;
 import static de.ixsen.streamlinkvodhelper.utils.SQLCommands.LOAD_HISTORY;
 import static de.ixsen.streamlinkvodhelper.utils.SQLCommands.LOAD_LINKS;
 
-public class DatabaseActions {
+public class DatabaseUtils implements LoggerHelper {
+
 
     public static void loadDatabase() {
         executeSql(CREATE_LINK_TABLE);
         executeSql(CREATE_HISTORY_TABLE);
-        HasLogger.getLogger().log(Level.INFO, "Database connected");
+        LoggerHelper.getLogger().info("Database connected");
     }
 
     public static void addToHistory(String name, String url, String date) {
@@ -37,9 +37,9 @@ public class DatabaseActions {
             preparedStatement.setString(2, url);
             preparedStatement.setString(3, date);
             preparedStatement.executeUpdate();
-            HasLogger.getLogger().log(Level.INFO, String.format("History added: %s, %s, %s", name, url, date));
+            LoggerHelper.getLogger().info(String.format("History added: %s, %s, %s", name, url, date));
         } catch (SQLException e) {
-            HasLogger.getLogger().log(Level.SEVERE, "Could not insert history into database", e);
+            LoggerHelper.getLogger().severe("Could not insert history into database");
         }
     }
 
@@ -48,9 +48,9 @@ public class DatabaseActions {
         try (PreparedStatement preparedStatement = getPreparedStatement(DELETE_HISTORY)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-            HasLogger.getLogger().log(Level.INFO, String.format("Deleted history entry with id: %d", id));
+            LoggerHelper.getLogger().info(String.format("Deleted history entry with id: %d", id));
         } catch (SQLException e) {
-            HasLogger.getLogger().log(Level.SEVERE, "Could not insert history into database", e);
+            LoggerHelper.getLogger().severe("Could not insert history into database");
         }
     }
 
@@ -64,7 +64,7 @@ public class DatabaseActions {
                 String url = resultSet.getString("url");
                 String date = resultSet.getString("date");
                 historyDTOS.add(new HistoryDTO(id, name, url, date));
-                HasLogger.getLogger().log(Level.INFO, String.format("History loaded: %s, %s, %s", name, url, date));
+                LoggerHelper.getLogger().info(String.format("History loaded: %s, %s, %s", name, url, date));
             }
             return historyDTOS;
         } catch (Exception e) {
@@ -77,13 +77,13 @@ public class DatabaseActions {
             preparedStatement.setString(1, name);
             preparedStatement.setInt(2, userId);
             preparedStatement.executeUpdate();
-            HasLogger.getLogger().log(Level.INFO, String.format("Link added: %s, %s", name, userId));
+            LoggerHelper.getLogger().info(String.format("Link added: %s, %s", name, userId));
         } catch (SQLException e) {
             if (e.getErrorCode() == SQLiteErrorCode.SQLITE_CONSTRAINT.code) {
-                Dialogs.error("This link already exists!");
-                HasLogger.getLogger().log(Level.WARNING, "Existing link not inserted into database");
+                DialogUtils.error("This link already exists!");
+                LoggerHelper.getLogger().warning("Existing link not inserted into database");
             } else {
-                HasLogger.getLogger().log(Level.SEVERE, "Could not insert link into database", e);
+                LoggerHelper.getLogger().severe("Could not insert link into database");
             }
         }
     }
@@ -92,9 +92,9 @@ public class DatabaseActions {
         try (PreparedStatement preparedStatement = getPreparedStatement(DELETE_LINK)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-            HasLogger.getLogger().log(Level.INFO, String.format("Deleted link with id: %d", id));
+            LoggerHelper.getLogger().info(String.format("Deleted link with id: %d", id));
         } catch (SQLException e) {
-            HasLogger.getLogger().log(Level.SEVERE, "Could not insert history into database", e);
+            LoggerHelper.getLogger().severe("Could not insert history into database");
         }
     }
 
@@ -107,7 +107,7 @@ public class DatabaseActions {
                 String name = resultSet.getString("name");
                 int userId = resultSet.getInt("user_id");
                 linkDTOS.add(new LinkDTO(id, name, userId));
-                HasLogger.getLogger().log(Level.INFO, String.format("Link loaded: %s, %s", name, userId));
+                LoggerHelper.getLogger().info(String.format("Link loaded: %s, %s", name, userId));
             }
             return linkDTOS;
         } catch (Exception e) {
@@ -119,7 +119,7 @@ public class DatabaseActions {
         try {
             getStatement().execute(query);
         } catch (SQLException e) {
-            HasLogger.getLogger().log(Level.SEVERE, "Executing SQL failed", e);
+            LoggerHelper.getLogger().severe("Executing SQL failed");
         }
     }
 

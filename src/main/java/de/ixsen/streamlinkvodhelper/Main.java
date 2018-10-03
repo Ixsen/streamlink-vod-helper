@@ -1,6 +1,7 @@
 package de.ixsen.streamlinkvodhelper;
 
-import de.ixsen.streamlinkvodhelper.utils.DatabaseActions;
+import de.ixsen.streamlinkvodhelper.utils.CacheUtils;
+import de.ixsen.streamlinkvodhelper.utils.DatabaseUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +18,9 @@ public class Main extends Application {
     @Override
     public void init() throws Exception {
         super.init();
-        DatabaseActions.loadDatabase();
+        CacheUtils.initialize();
+        System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tF %1$tT %4$s %2$s %5$s%6$s%n");
+        DatabaseUtils.loadDatabase();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package de.ixsen.streamlinkvodhelper.customcomponents;
 
-import de.ixsen.streamlinkvodhelper.utils.DatabaseActions;
+import de.ixsen.streamlinkvodhelper.utils.DatabaseUtils;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -28,7 +28,7 @@ public class LinkButton extends Button {
 
     public void addDeleteCallback(Runnable reloadLinks) {
         this.menuItem.setOnAction(e -> {
-            DatabaseActions.deleteLink(this.id);
+            DatabaseUtils.deleteLink(this.id);
             reloadLinks.run();
         });
     }

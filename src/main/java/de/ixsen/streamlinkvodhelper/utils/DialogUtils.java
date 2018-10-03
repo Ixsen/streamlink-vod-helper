@@ -2,7 +2,7 @@ package de.ixsen.streamlinkvodhelper.utils;
 
 import javafx.scene.control.Alert;
 
-public class Dialogs {
+public class DialogUtils {
 
     public static void info(String message) {
         info(null, message);

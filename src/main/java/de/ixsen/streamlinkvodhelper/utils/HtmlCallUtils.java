@@ -12,9 +12,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.logging.Level;
 
-public class HtmlCalls {
+public class HtmlCallUtils {
 
     public static JsonArray getVodsByUserId(int userId, SearchType type) {
         try {
@@ -23,7 +22,7 @@ public class HtmlCalls {
             String typeHeader = "&type=" + type;
             String urlPath = "https://api.twitch.tv/helix/videos?" + userIdHeader + amount + typeHeader;
             URL url = new URL(urlPath);
-            HasLogger.getLogger().log(Level.INFO, "Doing Get on: " + urlPath);
+            LoggerHelper.getLogger().info("Doing Get on: " + urlPath);
             HttpURLConnection connection = doHtmlCall(url);
             connection.connect();
             JsonParser jsonParser = new JsonParser();
@@ -52,7 +51,7 @@ public class HtmlCalls {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             if (Settings.getSettings().getClientId().isEmpty()) {
-                Dialogs.warning("Please set your Client ID in the settings.");
+                DialogUtils.warning("Please set your Client ID in the settings.");
                 throw new RuntimeException("No Client ID");
             }
             connection.setRequestProperty("Client-ID", Settings.getSettings().getClientId());
