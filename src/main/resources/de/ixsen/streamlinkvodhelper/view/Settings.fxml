@@ -3,6 +3,7 @@
 <?import de.ixsen.streamlinkvodhelper.custom.components.NumericTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,19 +14,34 @@
     <children>
         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <TextField fx:id="pathStreamlink" promptText="Path to streamlink">
+                <Label text="Path to streamlink">
                     <VBox.margin>
-                        <Insets left="5.0" right="5.0" top="20.0"/>
+                        <Insets left="6.0" top="15.0"/>
+                    </VBox.margin>
+                </Label>
+                <TextField fx:id="pathStreamlink">
+                    <VBox.margin>
+                        <Insets left="5.0" right="5.0"/>
                     </VBox.margin>
                 </TextField>
-                <NumericTextField fx:id="videoAmount" layoutX="30.0" layoutY="30.0" promptText="Amount of videos">
+                <Label layoutX="10.0" layoutY="10.0" text="Amount of videos">
                     <VBox.margin>
-                        <Insets left="5.0" right="5.0" top="20.0"/>
+                        <Insets left="6.0" top="15.0"/>
+                    </VBox.margin>
+                </Label>
+                <NumericTextField fx:id="videoAmount" layoutX="30.0" layoutY="30.0">
+                    <VBox.margin>
+                        <Insets left="5.0" right="5.0"/>
                     </VBox.margin>
                 </NumericTextField>
-                <TextField fx:id="freeSlot" layoutX="10.0" layoutY="55.0" promptText="Player executable">
+                <Label layoutX="10.0" layoutY="207.0" text="Player executable">
                     <VBox.margin>
-                        <Insets left="5.0" right="5.0" top="20.0"/>
+                        <Insets left="6.0" top="15.0"/>
+                    </VBox.margin>
+                </Label>
+                <TextField fx:id="freeSlot" layoutX="10.0" layoutY="55.0">
+                    <VBox.margin>
+                        <Insets left="5.0" right="5.0"/>
                     </VBox.margin>
                 </TextField>
                 <ToolBar>
