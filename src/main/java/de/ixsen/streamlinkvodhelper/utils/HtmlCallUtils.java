@@ -18,7 +18,7 @@ public class HtmlCallUtils {
     public static JsonArray getVodsByUserId(int userId, SearchType type) {
         try {
             String userIdHeader = "&user_id=" + userId;
-            String amount = "&first=100";
+            String amount = "&first=" + Settings.getSettings().getVideoAmount();
             String typeHeader = "&type=" + type;
             String urlPath = "https://api.twitch.tv/helix/videos?" + userIdHeader + amount + typeHeader;
             URL url = new URL(urlPath);

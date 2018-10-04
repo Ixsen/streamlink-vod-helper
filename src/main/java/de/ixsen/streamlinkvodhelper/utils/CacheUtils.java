@@ -11,7 +11,7 @@ public class CacheUtils implements LoggerHelper {
 
     public static void initialize() {
         File file = new File(CACHE_FOLDER);
-        if (!file.exists() || !file.isFile()) {
+        if (!file.exists()) {
             if (file.mkdir()) {
                 LoggerHelper.getLogger().info("Cache folder created");
             } else {

@@ -64,8 +64,8 @@ public class DatabaseUtils implements LoggerHelper {
                 String url = resultSet.getString("url");
                 String date = resultSet.getString("date");
                 historyDTOS.add(new HistoryDTO(id, name, url, date));
-                LoggerHelper.getLogger().info(String.format("History loaded: %s, %s, %s", name, url, date));
             }
+            LoggerHelper.getLogger().info(String.format("Loaded %s history entries", historyDTOS.size()));
             return historyDTOS;
         } catch (Exception e) {
             throw new RuntimeException("Loading history has failed", e);
@@ -107,8 +107,8 @@ public class DatabaseUtils implements LoggerHelper {
                 String name = resultSet.getString("name");
                 int userId = resultSet.getInt("user_id");
                 linkDTOS.add(new LinkDTO(id, name, userId));
-                LoggerHelper.getLogger().info(String.format("Link loaded: %s, %s", name, userId));
             }
+            LoggerHelper.getLogger().info(String.format("Loaded %d links", linkDTOS.size()));
             return linkDTOS;
         } catch (Exception e) {
             throw new RuntimeException("Getting links has failed", e);

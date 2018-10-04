@@ -11,39 +11,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Settings implements LoggerHelper {
+
     private static final String FILE_NAME = "settings.cfg";
-    private String clientId;
+
     private String pathStreamlink;
     private String player;
-
-    public String getPathStreamlink() {
-        return this.pathStreamlink;
-    }
-
-    public void setPathStreamlink(String pathStreamlink) {
-        this.pathStreamlink = pathStreamlink;
-    }
-
-    public String getPlayer() {
-        return this.player;
-    }
-
-    public void setPlayer(String player) {
-        this.player = player;
-    }
-
-    public String getClientId() {
-        return this.clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
+    private String videoAmount;
 
     public Settings() {
-        this.clientId = "";
         this.pathStreamlink = "";
         this.player = "";
+        this.videoAmount = "50";
     }
 
     public static Settings getSettings() {
@@ -83,11 +61,28 @@ public class Settings implements LoggerHelper {
         } catch (IOException e) {
             LoggerHelper.getLogger().severe("Writing settings file failed");
         }
+        LoggerHelper.getLogger().info("Saved new settings");
     }
 
-    public void makeChanges(String pathStreamlink, String clientIdText, String player) {
+    public String getPathStreamlink() {
+        return this.pathStreamlink;
+    }
+
+    public String getPlayer() {
+        return this.player;
+    }
+
+    public String getVideoAmount() {
+        return this.videoAmount;
+    }
+
+    public void makeChanges(String pathStreamlink, String videoAmount, String player) {
         this.pathStreamlink = pathStreamlink;
-        this.clientId = clientIdText;
         this.player = player;
+        this.videoAmount = videoAmount;
+    }
+
+    public String getClientId() {
+        return "6qxg5pw6ecl25072ehzzpiboa49nxe";
     }
 }
