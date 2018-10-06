@@ -13,9 +13,9 @@ public class CacheUtils implements LoggerHelper {
         File file = new File(CACHE_FOLDER);
         if (!file.exists()) {
             if (file.mkdir()) {
-                LoggerHelper.getLogger().info("Cache folder created");
+                LoggerHelper.logger().info("Cache folder created");
             } else {
-                LoggerHelper.getLogger().severe("Could not create cache folder, this may cause issues");
+                LoggerHelper.logger().severe("Could not create cache folder, this may cause issues");
             }
         }
     }
@@ -29,9 +29,9 @@ public class CacheUtils implements LoggerHelper {
             try {
                 BufferedImage image = ImageIO.read(new URL(url));
                 ImageIO.write(image, "jpg", file);
-                LoggerHelper.getLogger().info("Cached new file: " + fileName);
+                LoggerHelper.logger().info("Cached new file: " + fileName);
             } catch (IOException e) {
-                LoggerHelper.getLogger().severe("Could not cache thumbnail, images may not be shown");
+                LoggerHelper.logger().severe("Could not cache thumbnail, images may not be shown");
             }
         }
 

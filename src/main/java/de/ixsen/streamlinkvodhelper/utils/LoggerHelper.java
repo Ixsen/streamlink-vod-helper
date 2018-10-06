@@ -5,7 +5,11 @@ import java.util.logging.Logger;
 
 public interface LoggerHelper {
 
-    static Logger getLogger() {
+    static Logger logger() {
+        return Logger.getLogger(MethodHandles.lookup().getClass().getName());
+    }
+
+    default Logger getLogger() {
         return Logger.getLogger(MethodHandles.lookup().getClass().getName());
     }
 }

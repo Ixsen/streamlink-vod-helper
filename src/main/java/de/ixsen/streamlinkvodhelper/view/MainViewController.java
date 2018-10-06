@@ -13,13 +13,21 @@ import de.ixsen.streamlinkvodhelper.utils.DialogUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -76,8 +84,13 @@ public class MainViewController {
                 ? "streamlink"
                 : pathStreamlink;
 
-        ProcessBuilder processBuilder = new ProcessBuilder(pathStreamlink, "--player-passthrough", "hls", url, "best", "--player", Settings.getSettings().getPlayer()).inheritIO();
-        PlayVideoCalculation playVideoCalculation = new PlayVideoCalculation(processBuilder, this.calcIndicator);
+        PlayVideoCalculation playVideoCalculation = new PlayVideoCalculation(this.calcIndicator,
+                pathStreamlink,
+                "--player-passthrough", "hls",
+                url,
+                "best",
+                "--player", Settings.getSettings().getPlayer(),
+                "--player-http");
         playVideoCalculation.start();
 
         DatabaseUtils.addToHistory(title, url, date);

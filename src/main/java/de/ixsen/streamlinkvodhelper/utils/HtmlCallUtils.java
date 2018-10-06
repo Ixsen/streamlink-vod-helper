@@ -23,7 +23,7 @@ public class HtmlCallUtils {
             String typeHeader = "&type=" + type;
             String urlPath = "https://api.twitch.tv/helix/videos?" + userIdHeader + amount + typeHeader;
             URL url = new URL(urlPath);
-            LoggerHelper.getLogger().info("Doing Get on: " + urlPath);
+            LoggerHelper.logger().info("Doing Get on: " + urlPath);
             HttpURLConnection connection = doHtmlCall(url);
             connection.connect();
             JsonParser jsonParser = new JsonParser();
@@ -53,7 +53,7 @@ public class HtmlCallUtils {
             connection.setRequestMethod("GET");
             if (Settings.getSettings().getClientId().isEmpty()) {
                 DialogUtils.warning("Please set your Client ID in the settings.");
-                LoggerHelper.getLogger().severe("No client ID set!");
+                LoggerHelper.logger().severe("No client ID set!");
             }
             connection.setRequestProperty("Client-ID", Settings.getSettings().getClientId());
             return connection;

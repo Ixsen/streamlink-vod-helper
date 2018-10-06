@@ -28,7 +28,7 @@ public class DatabaseUtils implements LoggerHelper {
     public static void loadDatabase() {
         executeSql(CREATE_LINK_TABLE);
         executeSql(CREATE_HISTORY_TABLE);
-        LoggerHelper.getLogger().info("Database connected");
+        LoggerHelper.logger().info("Database connected");
     }
 
     public static void addToHistory(String name, String url, String date) {
@@ -37,9 +37,9 @@ public class DatabaseUtils implements LoggerHelper {
             preparedStatement.setString(2, url);
             preparedStatement.setString(3, date);
             preparedStatement.executeUpdate();
-            LoggerHelper.getLogger().info(String.format("History added: %s, %s, %s", name, url, date));
+            LoggerHelper.logger().info(String.format("History added: %s, %s, %s", name, url, date));
         } catch (SQLException e) {
-            LoggerHelper.getLogger().severe("Could not insert history into database");
+            LoggerHelper.logger().severe("Could not insert history into database");
         }
     }
 
@@ -48,9 +48,9 @@ public class DatabaseUtils implements LoggerHelper {
         try (PreparedStatement preparedStatement = getPreparedStatement(DELETE_HISTORY)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-            LoggerHelper.getLogger().info(String.format("Deleted history entry with id: %d", id));
+            LoggerHelper.logger().info(String.format("Deleted history entry with id: %d", id));
         } catch (SQLException e) {
-            LoggerHelper.getLogger().severe("Could not insert history into database");
+            LoggerHelper.logger().severe("Could not insert history into database");
         }
     }
 
@@ -65,7 +65,7 @@ public class DatabaseUtils implements LoggerHelper {
                 String date = resultSet.getString("date");
                 historyDTOS.add(new HistoryDTO(id, name, url, date));
             }
-            LoggerHelper.getLogger().info(String.format("Loaded %s history entries", historyDTOS.size()));
+            LoggerHelper.logger().info(String.format("Loaded %s history entries", historyDTOS.size()));
             return historyDTOS;
         } catch (Exception e) {
             throw new RuntimeException("Loading history has failed", e);
@@ -77,13 +77,13 @@ public class DatabaseUtils implements LoggerHelper {
             preparedStatement.setString(1, name);
             preparedStatement.setInt(2, userId);
             preparedStatement.executeUpdate();
-            LoggerHelper.getLogger().info(String.format("Link added: %s, %s", name, userId));
+            LoggerHelper.logger().info(String.format("Link added: %s, %s", name, userId));
         } catch (SQLException e) {
             if (e.getErrorCode() == SQLiteErrorCode.SQLITE_CONSTRAINT.code) {
                 DialogUtils.error("This link already exists!");
-                LoggerHelper.getLogger().warning("Existing link not inserted into database");
+                LoggerHelper.logger().warning("Existing link not inserted into database");
             } else {
-                LoggerHelper.getLogger().severe("Could not insert link into database");
+                LoggerHelper.logger().severe("Could not insert link into database");
             }
         }
     }
@@ -92,9 +92,9 @@ public class DatabaseUtils implements LoggerHelper {
         try (PreparedStatement preparedStatement = getPreparedStatement(DELETE_LINK)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-            LoggerHelper.getLogger().info(String.format("Deleted link with id: %d", id));
+            LoggerHelper.logger().info(String.format("Deleted link with id: %d", id));
         } catch (SQLException e) {
-            LoggerHelper.getLogger().severe("Could not insert history into database");
+            LoggerHelper.logger().severe("Could not insert history into database");
         }
     }
 
@@ -108,7 +108,7 @@ public class DatabaseUtils implements LoggerHelper {
                 int userId = resultSet.getInt("user_id");
                 linkDTOS.add(new LinkDTO(id, name, userId));
             }
-            LoggerHelper.getLogger().info(String.format("Loaded %d links", linkDTOS.size()));
+            LoggerHelper.logger().info(String.format("Loaded %d links", linkDTOS.size()));
             return linkDTOS;
         } catch (Exception e) {
             throw new RuntimeException("Getting links has failed", e);
@@ -119,7 +119,7 @@ public class DatabaseUtils implements LoggerHelper {
         try {
             getStatement().execute(query);
         } catch (SQLException e) {
-            LoggerHelper.getLogger().severe("Executing SQL failed");
+            LoggerHelper.logger().severe("Executing SQL failed");
         }
     }
 

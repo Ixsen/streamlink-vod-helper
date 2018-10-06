@@ -28,7 +28,7 @@ public class SearchResult extends AnchorPane {
             loader.setRoot(this);
             loader.load();
         } catch (IOException exc) {
-            LoggerHelper.getLogger().severe("Creating Search Result failed");
+            LoggerHelper.logger().severe("Creating Search Result failed");
         }
         this.thumbnail.setImage(new Image(thumbnailUrl, true));
         this.duration.setText(duration);

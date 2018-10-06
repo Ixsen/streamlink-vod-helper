@@ -51,7 +51,7 @@ public class Settings implements LoggerHelper {
             Gson gson = new Gson();
             gson.toJson(settings, writer);
         } catch (IOException e) {
-            LoggerHelper.getLogger().severe("Creating settings file failed");
+            LoggerHelper.logger().severe("Creating settings file failed");
         }
     }
 
@@ -59,9 +59,9 @@ public class Settings implements LoggerHelper {
         try (FileWriter writer = new FileWriter(FILE_NAME)) {
             new Gson().toJson(settings, writer);
         } catch (IOException e) {
-            LoggerHelper.getLogger().severe("Writing settings file failed");
+            LoggerHelper.logger().severe("Writing settings file failed");
         }
-        LoggerHelper.getLogger().info("Saved new settings");
+        LoggerHelper.logger().info("Saved new settings");
     }
 
     public String getPathStreamlink() {
