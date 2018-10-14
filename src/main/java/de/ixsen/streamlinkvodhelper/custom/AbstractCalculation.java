@@ -12,12 +12,12 @@ abstract class AbstractCalculation extends Thread {
     @Override
     public void run() {
         try {
-            this.calcIndicator.changeVisibility(true);
+            this.calcIndicator.setVisible();
             this.init();
             this.calculate();
             this.closure();
         } finally {
-            this.calcIndicator.changeVisibility(false);
+            this.calcIndicator.setInvisible();
         }
     }
 
@@ -26,6 +26,4 @@ abstract class AbstractCalculation extends Thread {
     abstract void calculate();
 
     abstract void closure();
-
-
 }

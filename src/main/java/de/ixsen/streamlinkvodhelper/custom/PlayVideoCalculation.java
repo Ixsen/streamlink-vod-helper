@@ -23,7 +23,7 @@ public class PlayVideoCalculation extends AbstractCalculation implements LoggerH
     void calculate() {
         try {
             Process start = this.processBuilder.start();
-            this.getLogger().info("Starting player with the folloing command: " + StringUtils.join(this.processBuilder.command(), " "));
+            this.getLogger().info("Starting player with the following command: " + StringUtils.join(this.processBuilder.command(), " "));
             start.waitFor();
         } catch (IOException | InterruptedException e) {
             this.getLogger().warning("The player thread was closed unexpectedly");
