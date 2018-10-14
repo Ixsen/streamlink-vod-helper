@@ -3,24 +3,29 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.layout.*?>
-<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <VBox>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" type="BorderPane"
+         xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <center>
+        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+              style="-fx-background-color: #f8f8f8; -fx-background-radius: 10; -fx-border-color: #000000; -fx-border-radius: 10; -fx-border-width: 1;">
             <children>
-                <ComboBox fx:id="quality" prefWidth="200.0" promptText="Choose quality">
+                <ComboBox fx:id="quality" maxHeight="1.7976931348623157E308" promptText="Choose quality">
                     <VBox.margin>
                         <Insets left="5.0" right="5.0" top="5.0"/>
                     </VBox.margin>
                 </ComboBox>
                 <HBox>
                     <children>
-                        <Button fx:id="playButton" disable="true" mnemonicParsing="false" text="Play">
+                        <Button fx:id="playButton" disable="true" mnemonicParsing="false" onAction="#playClicked" text="Play">
                             <HBox.margin>
                                 <Insets bottom="5.0" left="5.0" top="5.0"/>
                             </HBox.margin>
                         </Button>
-                        <Button fx:id="cancelButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false"
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onCancel"
                                 text="Cancel">
                             <HBox.margin>
                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
@@ -30,5 +35,17 @@
                 </HBox>
             </children>
         </VBox>
-    </children>
+    </center>
+    <top>
+        <Pane opacity="0.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+    </top>
+    <left>
+        <Pane opacity="0.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+    </left>
+    <bottom>
+        <Pane opacity="0.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+    </bottom>
+    <right>
+        <Pane opacity="0.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+    </right>
 </fx:root>

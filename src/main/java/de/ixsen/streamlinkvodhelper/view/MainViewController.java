@@ -9,15 +9,12 @@ import de.ixsen.streamlinkvodhelper.data.HistoryDTO;
 import de.ixsen.streamlinkvodhelper.data.LinkDTO;
 import de.ixsen.streamlinkvodhelper.data.SearchType;
 import de.ixsen.streamlinkvodhelper.data.VideoDTO;
-import de.ixsen.streamlinkvodhelper.data.settings.Settings;
 import de.ixsen.streamlinkvodhelper.utils.DatabaseUtils;
 import de.ixsen.streamlinkvodhelper.utils.DialogUtils;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -25,16 +22,23 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class MainViewController {
 
+    @FXML
+    private TabPane tabPane;
+    @FXML
+    private StackPane root;
     @FXML
     private ComboBox<SearchType> searchType;
     @FXML
@@ -77,7 +81,7 @@ public class MainViewController {
     }
 
     public void loadVideo(String title, String url, String date, String quality) {
-        String pathStreamlink = Settings.getSettings().getPathStreamlink();
+        String pathStreamlink = de.ixsen.streamlinkvodhelper.data.settings.Settings.getSettings().getPathStreamlink();
         pathStreamlink = pathStreamlink.isEmpty()
                 ? "streamlink"
                 : pathStreamlink;
@@ -87,7 +91,7 @@ public class MainViewController {
                 "--player-passthrough", "hls",
                 url,
                 quality,
-                "--player", Settings.getSettings().getPlayer(),
+                "--player", de.ixsen.streamlinkvodhelper.data.settings.Settings.getSettings().getPlayer(),
                 "--player-http");
         playVideoCalculation.start();
 
@@ -106,13 +110,8 @@ public class MainViewController {
     }
 
     @FXML
-    private void settingsClicked() throws IOException {
-        Parent load = FXMLLoader.load(this.getClass().getResource("Settings.fxml"));
-        Scene scene = new Scene(load);
-        Stage stage = new Stage();
-        stage.setTitle("Settings");
-        stage.setScene(scene);
-        stage.show();
+    private void settingsClicked() {
+        SettingsPopup.show(this.root);
     }
 
     @FXML
@@ -129,7 +128,7 @@ public class MainViewController {
             this.searchType.setValue(value);
         }
 
-        SearchCalculation searchCalculation = new SearchCalculation(this.calcIndicator, loginName, value, this);
+        SearchCalculation searchCalculation = new SearchCalculation(this.root, this.calcIndicator, loginName, value, this);
         searchCalculation.start();
     }
 
@@ -173,7 +172,7 @@ public class MainViewController {
     public void tableRowDoubleClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() == 2) {
             HistoryDTO selectedItem = this.historyTable.getSelectionModel().getSelectedItem();
-            PlayVideoPopup.show(new VideoDTO(selectedItem.getName(), selectedItem.getUrl(), selectedItem.getDate()), this::loadVideo);
+            PlayVideoPopup.show(this.root, new VideoDTO(selectedItem.getName(), selectedItem.getUrl(), selectedItem.getDate()), this::loadVideo);
         }
     }
 

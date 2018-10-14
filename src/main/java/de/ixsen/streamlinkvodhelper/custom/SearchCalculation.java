@@ -13,6 +13,7 @@ import de.ixsen.streamlinkvodhelper.utils.LoggerHelper;
 import de.ixsen.streamlinkvodhelper.view.MainViewController;
 import de.ixsen.streamlinkvodhelper.view.PlayVideoPopup;
 import javafx.application.Platform;
+import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +22,14 @@ public class SearchCalculation extends AbstractCalculation implements LoggerHelp
 
     private final SearchType searchType;
     private final String loginName;
-    private int userId;
+    private final StackPane parent;
     private final MainViewController controller;
-    private List<SearchResult> searchResults;
+    private final List<SearchResult> searchResults;
+    private int userId;
 
-    public SearchCalculation(CalcIndicator calcIndicator, String loginName, SearchType searchType, MainViewController controller) {
+    public SearchCalculation(StackPane parent, CalcIndicator calcIndicator, String loginName, SearchType searchType, MainViewController controller) {
         super(calcIndicator);
+        this.parent = parent;
         this.searchResults = new ArrayList<>();
         this.loginName = loginName;
         this.searchType = searchType;
@@ -62,7 +65,7 @@ public class SearchCalculation extends AbstractCalculation implements LoggerHelp
     }
 
     private void clickEvent(VideoDTO videoDTO) {
-        PlayVideoPopup.show(videoDTO, this.controller::loadVideo);
+        PlayVideoPopup.show(this.parent, videoDTO, this.controller::loadVideo);
     }
 
     @Override
