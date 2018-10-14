@@ -2,6 +2,7 @@ package de.ixsen.streamlinkvodhelper.view;
 
 import de.ixsen.streamlinkvodhelper.data.QualityOptions;
 import de.ixsen.streamlinkvodhelper.data.VideoDTO;
+import de.ixsen.streamlinkvodhelper.data.settings.Settings;
 import de.ixsen.streamlinkvodhelper.utils.LoggerHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -69,12 +70,17 @@ public class PlayVideoPopup extends AnchorPane {
 
 
     public static void show(VideoDTO videoDTO, LoadVideoCallback loadVideo) {
-        PlayVideoPopup popup = new PlayVideoPopup(videoDTO, loadVideo);
-        Scene scene = new Scene(popup);
-        Stage stage = new Stage();
-        stage.setTitle("Quality Options");
-        stage.setScene(scene);
-        stage.show();
+        String defaultQuality = Settings.getSettings().getDefaultQuality();
+        if (!defaultQuality.isEmpty()) {
+            loadVideo.loadVideo(videoDTO.getTitle(), videoDTO.getVideoUrl(), videoDTO.getCreationDate(), defaultQuality);
+        } else {
+            PlayVideoPopup popup = new PlayVideoPopup(videoDTO, loadVideo);
+            Scene scene = new Scene(popup);
+            Stage stage = new Stage();
+            stage.setTitle("Quality Options");
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     @FunctionalInterface

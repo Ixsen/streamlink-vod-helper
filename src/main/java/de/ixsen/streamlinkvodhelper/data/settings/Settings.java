@@ -17,11 +17,13 @@ public class Settings implements LoggerHelper {
     private String pathStreamlink;
     private String player;
     private String videoAmount;
+    private String defaultQuality;
 
     public Settings() {
         this.pathStreamlink = "";
         this.player = "";
         this.videoAmount = "50";
+        this.defaultQuality = "";
     }
 
     public static Settings getSettings() {
@@ -76,10 +78,15 @@ public class Settings implements LoggerHelper {
         return this.videoAmount;
     }
 
-    public void makeChanges(String pathStreamlink, String videoAmount, String player) {
+    public String getDefaultQuality() {
+        return this.defaultQuality;
+    }
+
+    public void makeChanges(String pathStreamlink, String videoAmount, String player, String defaultQuality) {
         this.pathStreamlink = pathStreamlink;
         this.player = player;
         this.videoAmount = videoAmount;
+        this.defaultQuality = defaultQuality;
     }
 
     public String getClientId() {

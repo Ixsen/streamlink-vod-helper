@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.ixsen.streamlinkvodhelper.custom.components.NumericTextField?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0"
-            xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="de.ixsen.streamlinkvodhelper.view.SettingsController">
     <children>
-        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="0.0">
             <children>
                 <Label text="Path to streamlink">
                     <VBox.margin>
@@ -34,6 +31,16 @@
                         <Insets left="5.0" right="5.0"/>
                     </VBox.margin>
                 </NumericTextField>
+                <Label layoutX="16.0" layoutY="25.0" text="Default quality">
+                    <VBox.margin>
+                        <Insets left="6.0" right="5.0" top="15.0"/>
+                    </VBox.margin>
+                </Label>
+                <TextField fx:id="defaultQuality" layoutX="15.0" layoutY="44.0" promptText="i.E. best or 360p">
+                    <VBox.margin>
+                        <Insets left="5.0" right="5.0"/>
+                    </VBox.margin>
+                </TextField>
                 <Label layoutX="10.0" layoutY="207.0" text="Player executable">
                     <VBox.margin>
                         <Insets left="6.0" top="15.0"/>
