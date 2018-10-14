@@ -8,6 +8,7 @@ import de.ixsen.streamlinkvodhelper.custom.components.SearchResult;
 import de.ixsen.streamlinkvodhelper.data.HistoryDTO;
 import de.ixsen.streamlinkvodhelper.data.LinkDTO;
 import de.ixsen.streamlinkvodhelper.data.SearchType;
+import de.ixsen.streamlinkvodhelper.data.VideoDTO;
 import de.ixsen.streamlinkvodhelper.data.settings.Settings;
 import de.ixsen.streamlinkvodhelper.utils.DatabaseUtils;
 import de.ixsen.streamlinkvodhelper.utils.DialogUtils;
@@ -75,7 +76,7 @@ public class MainViewController {
         this.historyTable.getVisibleLeafColumn(2).prefWidthProperty().bind(this.historyTable.widthProperty().divide(5));
     }
 
-    public void loadVideo(String title, String url, String date) {
+    public void loadVideo(String title, String url, String date, String quality) {
         String pathStreamlink = Settings.getSettings().getPathStreamlink();
         pathStreamlink = pathStreamlink.isEmpty()
                 ? "streamlink"
@@ -85,7 +86,7 @@ public class MainViewController {
                 pathStreamlink,
                 "--player-passthrough", "hls",
                 url,
-                "best",
+                quality,
                 "--player", Settings.getSettings().getPlayer(),
                 "--player-http");
         playVideoCalculation.start();
@@ -172,8 +173,7 @@ public class MainViewController {
     public void tableRowDoubleClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() == 2) {
             HistoryDTO selectedItem = this.historyTable.getSelectionModel().getSelectedItem();
-            this.loadVideo(selectedItem.getName(), selectedItem.getUrl(), selectedItem.getDate());
-            this.browseTab.getTabPane().getSelectionModel().select(this.browseTab);
+            PlayVideoPopup.show(new VideoDTO(selectedItem.getName(), selectedItem.getUrl(), selectedItem.getDate()), this::loadVideo);
         }
     }
 
