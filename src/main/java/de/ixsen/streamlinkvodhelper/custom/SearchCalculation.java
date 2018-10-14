@@ -3,6 +3,7 @@ package de.ixsen.streamlinkvodhelper.custom;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import de.ixsen.streamlinkvodhelper.custom.components.CalcIndicator;
 import de.ixsen.streamlinkvodhelper.custom.components.SearchResult;
 import de.ixsen.streamlinkvodhelper.data.SearchType;
 import de.ixsen.streamlinkvodhelper.utils.CacheUtils;
@@ -10,7 +11,6 @@ import de.ixsen.streamlinkvodhelper.utils.HtmlCallUtils;
 import de.ixsen.streamlinkvodhelper.utils.LoggerHelper;
 import de.ixsen.streamlinkvodhelper.view.MainViewController;
 import javafx.application.Platform;
-import javafx.scene.control.ProgressIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class SearchCalculation extends AbstractCalculation implements LoggerHelp
     private final MainViewController controller;
     private List<SearchResult> searchResults;
 
-    public SearchCalculation(ProgressIndicator calcIndicator, String loginName, SearchType searchType, MainViewController controller) {
+    public SearchCalculation(CalcIndicator calcIndicator, String loginName, SearchType searchType, MainViewController controller) {
         super(calcIndicator);
         this.searchResults = new ArrayList<>();
         this.loginName = loginName;
@@ -41,8 +41,8 @@ public class SearchCalculation extends AbstractCalculation implements LoggerHelp
         this.userId = HtmlCallUtils.getUserIdByLogin(this.loginName);
 
         JsonArray vodsByLogin = HtmlCallUtils.getVodsByUserId(this.userId, this.searchType);
-        for (JsonElement elem : vodsByLogin) {
-            JsonObject jsonObject = elem.getAsJsonObject();
+        for (JsonElement element : vodsByLogin) {
+            JsonObject jsonObject = element.getAsJsonObject();
 
             String thumbnailUrl = jsonObject.get("thumbnail_url").getAsString().replace("%{width}", "320").replace("%{height}", "180");
             String duration = jsonObject.get("duration").getAsString();

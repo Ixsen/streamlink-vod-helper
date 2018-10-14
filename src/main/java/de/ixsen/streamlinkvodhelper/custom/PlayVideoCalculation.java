@@ -1,7 +1,7 @@
 package de.ixsen.streamlinkvodhelper.custom;
 
+import de.ixsen.streamlinkvodhelper.custom.components.CalcIndicator;
 import de.ixsen.streamlinkvodhelper.utils.LoggerHelper;
-import javafx.scene.control.ProgressIndicator;
 import org.sqlite.util.StringUtils;
 
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.io.IOException;
 public class PlayVideoCalculation extends AbstractCalculation implements LoggerHelper {
     private final ProcessBuilder processBuilder;
 
-    public PlayVideoCalculation(ProgressIndicator calcIndicator, String... commands) {
+    public PlayVideoCalculation(CalcIndicator calcIndicator, String... commands) {
         super(calcIndicator);
         this.processBuilder = new ProcessBuilder(commands).inheritIO();
     }

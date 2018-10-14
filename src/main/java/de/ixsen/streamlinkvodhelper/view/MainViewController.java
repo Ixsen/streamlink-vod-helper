@@ -2,6 +2,7 @@ package de.ixsen.streamlinkvodhelper.view;
 
 import de.ixsen.streamlinkvodhelper.custom.PlayVideoCalculation;
 import de.ixsen.streamlinkvodhelper.custom.SearchCalculation;
+import de.ixsen.streamlinkvodhelper.custom.components.CalcIndicator;
 import de.ixsen.streamlinkvodhelper.custom.components.LinkButton;
 import de.ixsen.streamlinkvodhelper.custom.components.SearchResult;
 import de.ixsen.streamlinkvodhelper.data.HistoryDTO;
@@ -13,7 +14,10 @@ import de.ixsen.streamlinkvodhelper.utils.DialogUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -40,7 +44,7 @@ public class MainViewController {
     @FXML
     private Pane hSpacer;
     @FXML
-    private ProgressIndicator calcIndicator;
+    private CalcIndicator calcIndicator;
     @FXML
     private TableView<HistoryDTO> historyTable;
     @FXML

@@ -1,24 +1,23 @@
 package de.ixsen.streamlinkvodhelper.custom;
 
-import javafx.scene.control.ProgressIndicator;
+import de.ixsen.streamlinkvodhelper.custom.components.CalcIndicator;
 
 abstract class AbstractCalculation extends Thread {
-    private final ProgressIndicator calcIndicator;
+    private final CalcIndicator calcIndicator;
 
-    AbstractCalculation(ProgressIndicator calcIndicator) {
+    AbstractCalculation(CalcIndicator calcIndicator) {
         this.calcIndicator = calcIndicator;
     }
 
     @Override
     public void run() {
-        if (!this.calcIndicator.isVisible()) {
-            this.calcIndicator.setVisible(true);
+        try {
+            this.calcIndicator.changeVisibility(true);
             this.init();
             this.calculate();
             this.closure();
-            this.calcIndicator.setVisible(false);
-        } else {
-            this.calculate();
+        } finally {
+            this.calcIndicator.changeVisibility(false);
         }
     }
 
@@ -27,4 +26,6 @@ abstract class AbstractCalculation extends Thread {
     abstract void calculate();
 
     abstract void closure();
+
+
 }
