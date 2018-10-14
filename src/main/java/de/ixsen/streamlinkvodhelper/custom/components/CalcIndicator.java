@@ -4,17 +4,17 @@ import javafx.scene.control.ProgressIndicator;
 
 public class CalcIndicator extends ProgressIndicator {
 
-    private int visiblilityDepth = 0;
+    private int visibilityDepth = 0;
 
 
     public void changeVisibility(boolean visible) {
         if (visible) {
-            this.visiblilityDepth++;
+            this.visibilityDepth++;
         } else {
-            this.visiblilityDepth--;
+            this.visibilityDepth--;
         }
 
-        boolean shouldBeVisible = this.visiblilityDepth > 0;
+        boolean shouldBeVisible = this.visibilityDepth > 0;
         this.setVisible(shouldBeVisible);
     }
 }

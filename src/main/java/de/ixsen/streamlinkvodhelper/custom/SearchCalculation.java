@@ -10,9 +10,16 @@ import de.ixsen.streamlinkvodhelper.utils.CacheUtils;
 import de.ixsen.streamlinkvodhelper.utils.HtmlCallUtils;
 import de.ixsen.streamlinkvodhelper.utils.LoggerHelper;
 import de.ixsen.streamlinkvodhelper.view.MainViewController;
+import de.ixsen.streamlinkvodhelper.view.PlayVideoPopupController;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SearchCalculation extends AbstractCalculation implements LoggerHelper {
@@ -54,9 +61,20 @@ public class SearchCalculation extends AbstractCalculation implements LoggerHelp
 
             SearchResult searchResult = new SearchResult(cachedThumbnail, duration, title, creationDate);
 
+            searchResult.setOnMouseClicked(this::clickEvent);
             searchResult.setOnMouseClicked(e -> this.controller.loadVideo(title, videoUrl, creationDate));
             this.searchResults.add(searchResult);
         }
+    }
+
+    private void clickEvent(MouseEvent mouseEvent) {
+        PlayVideoPopupController popup = new PlayVideoPopupController(Collections.emptyList(), null) // TODO lksjdfö ahdfgö hdslfkg hsl
+        Parent load = FXMLLoader.load(this.getClass().getResource("Settings.fxml"));
+        Scene scene = new Scene(load);
+        Stage stage = new Stage();
+        stage.setTitle("Settings");
+        stage.setScene(scene);
+        stage.show();
     }
 
     @Override

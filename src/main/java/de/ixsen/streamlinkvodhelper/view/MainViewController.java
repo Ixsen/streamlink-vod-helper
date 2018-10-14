@@ -13,6 +13,7 @@ import de.ixsen.streamlinkvodhelper.utils.DatabaseUtils;
 import de.ixsen.streamlinkvodhelper.utils.DialogUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
@@ -105,7 +106,8 @@ public class MainViewController {
 
     @FXML
     private void settingsClicked() throws IOException {
-        Scene scene = new Scene(FXMLLoader.load(this.getClass().getResource("Settings.fxml")));
+        Parent load = FXMLLoader.load(this.getClass().getResource("Settings.fxml"));
+        Scene scene = new Scene(load);
         Stage stage = new Stage();
         stage.setTitle("Settings");
         stage.setScene(scene);
