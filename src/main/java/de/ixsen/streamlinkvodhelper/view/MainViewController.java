@@ -13,21 +13,13 @@ import de.ixsen.streamlinkvodhelper.utils.DialogUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -124,7 +116,13 @@ public class MainViewController {
     private void search(String loginName) {
         this.searchResults.getChildren().clear();
 
-        SearchCalculation searchCalculation = new SearchCalculation(this.calcIndicator, loginName, this.searchType.getValue(), this);
+        SearchType value = this.searchType.getValue();
+        if (value == null) {
+            value = SearchType.all;
+            this.searchType.setValue(value);
+        }
+
+        SearchCalculation searchCalculation = new SearchCalculation(this.calcIndicator, loginName, value, this);
         searchCalculation.start();
     }
 
